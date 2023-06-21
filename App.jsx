@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Fun from "./components/Fun-component";
 import Todo from "./components/Todo";
 import Quest from "./components/Quest";
+import Comment from "./components/Comment";
 
 export default function App() {
 
@@ -16,7 +17,7 @@ function map() {
   return todo.map((e) => {
     return <View>
       <Quest value={e}/>
-      <TouchableOpacity onPress={}>
+      <TouchableOpacity>
           <FontAwesome5
             name="trash"
             size={20}
@@ -38,31 +39,34 @@ const checkarray = () => {
 
   return (
   
-     <ScrollView style={styles.scrollview}>
-          <View style={styles.container}>
-      <View style={styles.smallcont}>
-        <Text style={styles.header}>Todo Tasks</Text>
-        {map()}
-        <TextInput
-         style={styles.input}
-         placeholder="Write Tasks"
-         onChangeText={(e) => setInputValue(e)} />
-        <Button
-          onPress={add}
-          style={styles.buttons}
-          title="Add"
-          color="#4d76ff"
-        />
-                <Button
-          onPress={checkarray}
-          style={styles.buttons}
-          title="checkarray"
-          color="#4d76ff"
-        />
-      </View>
-      <StatusBar style="inverted"/>
-    </View>
-     </ScrollView>
+    //  <ScrollView style={styles.scrollview}>
+    //       <View style={styles.container}>
+    //   <View style={styles.smallcont}>
+    //     <Text style={styles.header}>Todo Tasks</Text>
+    //     {map()}
+    //     <TextInput
+    //      style={styles.input}
+    //      placeholder="Write Tasks"
+    //      onChangeText={(e) => setInputValue(e)} />
+    //     <Button
+    //       onPress={add}
+    //       style={styles.buttons}
+    //       title="Add"
+    //       color="#4d76ff"
+    //     />
+    //             <Button
+    //       onPress={checkarray}
+    //       style={styles.buttons}
+    //       title="checkarray"
+    //       color="#4d76ff"
+    //     />
+    //   </View>
+    //   <StatusBar style="inverted"/>
+    // </View>
+    //  </ScrollView>
+    <SafeAreaView>
+      <Comment/>
+    </SafeAreaView>
  
   );
 }

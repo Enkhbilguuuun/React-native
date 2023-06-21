@@ -27,7 +27,6 @@ const Quest = ({ value }) => {
         }}
       >
         {value}{" "}
-        
       </Text>
     </View>
   );
