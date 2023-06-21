@@ -1,5 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput, Button, ScrollView, SafeAreaView, TouchableOpacity} from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 import { useEffect, useState } from "react";
@@ -9,36 +18,38 @@ import Quest from "./components/Quest";
 import Comment from "./components/Comment";
 
 export default function App() {
+  const [todo, setTodo] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const fetching = async () => {
+    const res = await fetch ("http://localhost:3000/api/hello")
+    console.log(res)
+  }
 
-const [todo, setTodo] = useState([]);
-const [inputValue, setInputValue] = useState("")
-
-function map() {
-  return todo.map((e) => {
-    return <View>
-      <Quest value={e}/>
-      <TouchableOpacity>
-          <FontAwesome5
-            name="trash"
-            size={20}
-            // color={clicked ? "white" : "black"}
-          />
-        </TouchableOpacity>
-    </View> 
-    
-  });
-}
-const add = () => {
-  console.log(inputValue)
-  setTodo([...todo, inputValue])
-}
-const checkarray = () => {
-  console.log(todo)
-}
-
+  function map() {
+    return todo.map((e) => {
+      return (
+        <View>
+          <Quest value={e} />
+          <TouchableOpacity>
+            <FontAwesome5
+              name="trash"
+              size={20}
+              // color={clicked ? "white" : "black"}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    });
+  }
+  const add = () => {
+    console.log(inputValue);
+    setTodo([...todo, inputValue]);
+  };
+  const checkarray = () => {
+    console.log(todo);
+  };
 
   return (
-  
     //  <ScrollView style={styles.scrollview}>
     //       <View style={styles.container}>
     //   <View style={styles.smallcont}>
@@ -64,10 +75,17 @@ const checkarray = () => {
     //   <StatusBar style="inverted"/>
     // </View>
     //  </ScrollView>
-    <SafeAreaView>
-      <Comment/>
+    <SafeAreaView style={styles.safearea}>
+      <ScrollView>
+        <Comment />
+        <Button
+          onPress={fetching}
+          style={styles.buttons}
+          title="fetch"
+          color="#4d76ff"
+        />
+      </ScrollView> 
     </SafeAreaView>
- 
   );
 }
 
@@ -97,11 +115,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  scrollview:{
-    flex:1
-  }
+  scrollview: {
+    flex: 1,
+  },
+  safearea: {
+    flex: 1,
+    backgroundColor: "#538495",
+    display: "flex",
+    alignItems: "center",
+  },
 });
-
-
-
-
