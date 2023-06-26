@@ -8,8 +8,10 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 import { useEffect, useState } from "react";
 import Fun from "./components/Fun-component";
@@ -19,36 +21,39 @@ import Comment from "./components/Comment";
 
 export default function App() {
   const [todo, setTodo] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  const fetching = async () => {
-    const res = await fetch ("http://localhost:3000/api/hello")
-    console.log(res)
-  }
+  const [inputValue, setInputValue] = useState();
+  const [create, setCreate] = useState(false);
+
+  useEffect(() => {
+    fetch("http://192.168.4.150:3000/api/getpost")
+      .then((res) => res.json())
+      .then((data) => {
+        setTodo(data.documents);
+      });
+  }, []);
+
+  
 
   function map() {
     return todo.map((e) => {
       return (
         <View>
-          <Quest value={e} />
-          <TouchableOpacity>
-            <FontAwesome5
-              name="trash"
-              size={20}
-              // color={clicked ? "white" : "black"}
-            />
-          </TouchableOpacity>
+          <Comment value={e} />
         </View>
       );
     });
   }
   const add = () => {
-    console.log(inputValue);
-    setTodo([...todo, inputValue]);
+    console.log({inputValue});
+    fetch('http://192.168.4.150:3000/api/createpost', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({text: inputValue}),
+    })
   };
-  const checkarray = () => {
-    console.log(todo);
-  };
-
+  const checkarray = () => {};
   return (
     //  <ScrollView style={styles.scrollview}>
     //       <View style={styles.container}>
@@ -76,15 +81,60 @@ export default function App() {
     // </View>
     //  </ScrollView>
     <SafeAreaView style={styles.safearea}>
-      <ScrollView>
-        <Comment />
-        <Button
-          onPress={fetching}
-          style={styles.buttons}
-          title="fetch"
-          color="#4d76ff"
-        />
-      </ScrollView> 
+      <Modal transparent={true} visible={create}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{
+              height: "auto",
+              width: 300,
+              padding: 5,
+              backgroundColor: "white",
+              borderRadius: 6,
+              alignItems: "center",
+            }}
+          >
+            {/* <TouchableOpacity onPress={() => console.log("irj bn")}>
+              <AntDesign
+                style={{ left: 133 }}
+                name="closecircleo"
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity> */}
+            <Text>Create Comment</Text>
+            <TextInput
+              placeholder="comment"
+              onChangeText={(e) => setInputValue(e)}
+              style={{ borderWidth: 1, width: 280, borderRadius: 6, margin: 5 }}
+            />
+            <Button title="add" onPress={add} />
+            <Button title="close" onPress={() => setCreate(false)} />
+          </View>
+        </View>
+      </Modal>
+      <ScrollView>{map()}</ScrollView>
+      <View
+        style={{
+          height: 70,
+          width: 70,
+          borderRadius: 6,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "orange",
+          borderWidth: 2,
+        }}
+      >
+        <TouchableOpacity onPress={()=>setCreate(true)}>
+        <AntDesign name="plussquareo" size={50} color="black" />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
